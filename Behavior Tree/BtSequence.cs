@@ -13,24 +13,25 @@ public class BtSequence:BTNode
     
     public override Results Execute()
     {
-        if (mCurrentChild >= mChildren.Count)
-        {
-            return Results.Success;
-        }
+        var result = mChildren[mCurrentChild].Execute();
 
-        Results result = mChildren[mCurrentChild].Execute();
+        if (mCurrentChild >= mChildren.Count)
+            return Results.Success;
+
         if (result == Results.Success)
         {
             mCurrentChild++;
-            return Execute();
-        }
-        else if (result == Results.Failure)
-        {
-            return Results.Failure;
-        }
-        else
-        {
+            if (mCurrentChild >= mChildren.Count)
+            {
+                mCurrentChild = 0;
+                return Results.Success;
+            }
+            
             return Results.Running;
         }
+        if(result == Results.Failure)
+            mCurrentChild = 0;
+        
+        return result;
     }
 }

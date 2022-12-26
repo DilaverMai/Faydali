@@ -9,7 +9,7 @@ public class Repeater : DecoratorNode
 
     public override Results Execute()
     {
-        Debug.Log("Child Result: " + Child.Execute());
+        Child.Execute();
         return Results.Running;
     }
 }
